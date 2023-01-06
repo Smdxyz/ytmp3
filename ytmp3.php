@@ -2,7 +2,7 @@
 
 function get($id,$mes){
 
-$token = "5863629844:AAFT1i7tEA5gNm-NtOtMLzoI7nAxfpHaAI0;
+$token = "5863629844:AAFT1i7tEA5gNm-NtOtMLzoI7nAxfpHaAI0";
 
 $ch = curl_init();
 
