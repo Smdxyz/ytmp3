@@ -1,68 +1,29 @@
 <?php
 
-function get($id,$mes){
+$curl = curl_init();
 
-$token = "5863629844:AAFT1i7tEA5gNm-NtOtMLzoI7nAxfpHaAI0";
+curl_setopt_array($curl, [
+	CURLOPT_URL => "https://youtube-mp36.p.rapidapi.com/dl?id=UxxajLWwzqY",
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 30,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "GET",
+	CURLOPT_HTTPHEADER => [
+		"X-RapidAPI-Host: youtube-mp36.p.rapidapi.com",
+		"X-RapidAPI-Key: 41619b6a7dmshf124b3ab111324dp192026jsn86e436d1f9d0"
+	],
+]);
 
-$ch = curl_init();
+$response = curl_exec($curl);
+$err = curl_error($curl);
 
-curl_setopt($ch, CURLOPT_POST, true);
+curl_close($curl);
 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: multipart/form-data']);
-
-curl_setopt($ch, CURLOPT_URL, "https://api.telegram.org/bot$token/sendMessage?");
-
-$postFields = array(
-
-    'chat_id' => $id,
-
-    'text' => $mes,
-
-    'parse_mode' => 'HTML',
-
-    'disable_web_page_preview' => false,
-
-);
-
-curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-
-return curl_exec($ch); 
-
-curl_close($ch);
-
+if ($err) {
+	echo "cURL Error #:" . $err;
+} else {
+	echo $response;
 }
-
-$cek = file_get_contents('php://input');
-
-$x = json_decode($cek,1);
-
-$id = $x["message"]["chat"]["id"];
-
-$nama = $x["message"]["chat"]["first_name"];
-
-$text = $x["message"]["text"];
-
-if($text == "/start"){
-
-  $msg = " Selamat Datang $nama \n";
-
-}else{
-if(strpos($text,"youtu.be") != null | strpos($text,"youtube.com") != null){
-
-  $link = $text;
-   if(file_exists("save.html")){
-       unlink("save.html");
-       }
-  include("file.php");
-  $msg = file_get_contents("save.html");
-}else{
-    // bila tidak url YouTube kita bisa kasih message
-    $msg = "maaf url tidak Valid";
-}
-}
-
-get($id,$msg);
-
-?>
